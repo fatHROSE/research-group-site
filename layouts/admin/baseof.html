@@ -1,0 +1,342 @@
+{{ define "main" }}
+{{ partial "supabase.html" . }}
+<div class="container">
+    {{ .Content }}
+</div>
+{{ end }}
+
+{{ define "head" }}
+<style>
+    /* 管理后台样式 */
+    .admin-layout {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .admin-nav {
+        display: flex;
+        gap: 1rem;
+    }
+    
+    .admin-nav a {
+        color: #333;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+    }
+    
+    .admin-nav a:hover {
+        background: #f5f5f5;
+    }
+    
+    .admin-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 2rem;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #0064a3;
+        box-shadow: 0 0 0 2px rgba(0,100,163,0.2);
+    }
+    
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    
+    .btn-primary {
+        background: #0064a3;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #00507a;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #545b62;
+    }
+    
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .btn-danger:hover {
+        background: #c82333;
+    }
+    
+    .btn-success {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-success:hover {
+        background: #218838;
+    }
+    
+    .list-group {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .list-group-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid #eee;
+        margin-bottom: 0.5rem;
+        border-radius: 4px;
+    }
+    
+    .list-group-item:hover {
+        background: #f8f9fa;
+    }
+    
+    .list-group-item h4 {
+        margin: 0 0 0.5rem 0;
+        color: #333;
+    }
+    
+    .list-group-item p {
+        margin: 0;
+        color: #666;
+        font-size: 0.9rem;
+    }
+    
+    .list-group-item .actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+    
+    .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+    
+    .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        max-width: 700px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .modal-header h3 {
+        margin: 0;
+        color: #333;
+    }
+    
+    .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        padding: 0.5rem;
+    }
+    
+    .modal-close:hover {
+        color: #333;
+    }
+    
+    .alert {
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+    }
+    
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    .alert-warning {
+        background: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .badge-active {
+        background: #d4edda;
+        color: #155724;
+    }
+    
+    .badge-completed {
+        background: #d1ecf1;
+        color: #0c5460;
+    }
+    
+    .badge-paused {
+        background: #fff3cd;
+        color: #856404;
+    }
+    
+    .file-upload {
+        border: 2px dashed #ddd;
+        border-radius: 4px;
+        padding: 2rem;
+        text-align: center;
+        cursor: pointer;
+        transition: border-color 0.2s;
+    }
+    
+    .file-upload:hover {
+        border-color: #0064a3;
+    }
+    
+    .file-upload input[type="file"] {
+        display: none;
+    }
+    
+    .file-upload-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+    }
+    
+    .file-upload-label i {
+        font-size: 2rem;
+        color: #0064a3;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        color: #666;
+    }
+    
+    .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #ddd;
+    }
+    
+    .empty-state p {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+    
+    @media (max-width: 768px) {
+        .admin-layout {
+            padding: 1rem;
+        }
+        
+        .admin-header {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .admin-nav {
+            flex-wrap: wrap;
+        }
+        
+        .list-group-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .list-group-item .actions {
+            margin-top: 1rem;
+            width: 100%;
+        }
+        
+        .list-group-item .actions .btn {
+            flex: 1;
+        }
+    }
+</style>
+{{ end }}

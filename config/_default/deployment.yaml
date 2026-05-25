@@ -1,0 +1,32 @@
+# Hugo 模块配置
+# 用于管理 Wowchemy 主题模块
+
+module:
+  imports:
+    - path: github.com/wowchemy/wowchemy-hugo-themes/modules/wowchemy-bootstrap5
+      mounts:
+        - source: ../../assets
+          target: assets
+        - source: ../../layouts
+          target: layouts
+        - source: ../../static
+          target: static
+
+# GitHub 部署配置
+deployment:
+  targets:
+    - name: "gh-pages"
+      URL: "https://yourusername.github.io/research-group-site/"
+      # 配置缓存
+      caches:
+        - type: "filesystem"
+          dir: "public"
+
+# 本地开发配置
+server:
+  # 启用热重载
+  watch: true
+  # 端口设置
+  port: 1313
+  # 自动打开浏览器
+  openBrowser: true

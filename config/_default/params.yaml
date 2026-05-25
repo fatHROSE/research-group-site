@@ -1,0 +1,152 @@
+# 站点参数配置
+
+# Supabase 配置（部署时替换为真实值）
+supabase:
+  url: "https://zmvnjrmkuywfgcoiyscc.supabase.co"
+  anon_key: "sb_publishable_014ct25v6jiwccFxIjD52g_cJKWbtty"
+
+# 站点外观
+appearance:
+  theme_day: minimal
+  theme_night: minimal
+  font: minimal
+  font_size: L
+
+# 首页 hero 区域
+hero:
+  enabled: true
+  design:
+    columns: "2"
+    background:
+      image: ""
+      image_circular: false
+      image_position: center
+      gradient_angle: 180
+      gradient_start: "rgb(37, 99, 235)"
+      gradient_end: "rgb(30, 64, 175)"
+      text_color_light: true
+  title: "生物驱动材料与功能化应用课题组"
+  content: "探索生物基材料前沿，推动可持续功能化应用"
+  cta:
+    url: "#projects"
+    label: 查看项目
+    icon: ""
+
+# 项目展示区
+projects:
+  enabled: true
+  design:
+    columns: "2"
+    view: card
+    background:
+      color: ""
+      image: ""
+      image_parallax: false
+      gradient_start: ""
+      gradient_end: ""
+  section_id: projects
+  title: "研究项目"
+  subtitle: "当前进行中的研究课题"
+  content:
+    page_type: project
+    count: 6
+    filters:
+      folders:
+        - project
+      tags: []
+      category: []
+      publication_type: []
+      featured_only: false
+      exclude_featured: false
+      exclude_future: true
+      exclude_past: false
+
+# 论文展示区
+publications:
+  enabled: true
+  design:
+    columns: "2"
+    view: card
+    background:
+      color: ""
+      image: ""
+      image_parallax: false
+      gradient_start: ""
+      gradient_end: ""
+  section_id: publications
+  title: "学术论文"
+  subtitle: "课题组发表的学术成果"
+  content:
+    page_type: publication
+    count: 6
+    filters:
+      folders:
+        - publication
+      tags: []
+      category: []
+      publication_type: []
+      featured_only: false
+      exclude_featured: false
+      exclude_future: true
+      exclude_past: false
+
+# 人员展示区
+people:
+  enabled: true
+  design:
+    columns: "2"
+    view: card
+    background:
+      color: ""
+      image: ""
+      image_parallax: false
+      gradient_start: ""
+      gradient_end: ""
+  section_id: people
+  title: "研究团队"
+  subtitle: "课题组成员"
+  content:
+    page_type: person
+    count: 6
+    filters:
+      folders:
+        - authors
+      tags: []
+      category: []
+      publication_type: []
+      featured_only: false
+      exclude_featured: false
+      exclude_future: true
+      exclude_past: false
+
+# 文档展示区（自定义）
+docs:
+  enabled: true
+  design:
+    columns: "2"
+    view: card
+    background:
+      color: ""
+      image: ""
+      image_parallax: false
+      gradient_start: ""
+      gradient_end: ""
+  section_id: docs
+  title: "文档共享"
+  subtitle: "课题组内部文档和资料"
+
+# 联系表单
+contact:
+  enabled: true
+  design:
+    columns: "2"
+    background:
+      color: ""
+      image: ""
+      image_parallax: false
+      gradient_start: ""
+      gradient_end: ""
+  section_id: contact
+  title: "联系我们"
+  content: "如有任何问题，请随时联系"
+  email: "contact@example.com"

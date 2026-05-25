@@ -1,0 +1,20 @@
+# 菜单配置
+main:
+  - name: 首页
+    url: '#hero'
+    weight: 10
+  - name: 项目
+    url: '#projects'
+    weight: 20
+  - name: 论文
+    url: '#publications'
+    weight: 30
+  - name: 团队
+    url: '#people'
+    weight: 40
+  - name: 文档
+    url: '#docs'
+    weight: 50
+  - name: 联系
+    url: '#contact'
+    weight: 60
