@@ -7,38 +7,34 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: "latest"
-          extended: true
+      - name: Install Hugo
+        run: |
+          wget -q https://github.com/gohugoio/hugo/releases/download/v0.145.0/hugo_extended_0.145.0_linux-amd64.tar.gz
+          tar xzf hugo_extended_0.145.0_linux-amd64.tar.gz hugo
+          sudo mv hugo /usr/local/bin/
+          hugo version
 
       - name: Build
         run: hugo --gc --minify --baseURL "https://fathrose.github.io/research-group-site/"
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+      - name: Deploy to gh-pages
+        run: |
+          cd public
+          git init
+          git config user.name "fatHROSE"
+          git config user.email "fatHROSE@users.noreply.github.com"
+          git add -A
+          git commit -m "Deploy $(date)"
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/fatHROSE/research-group-site.git
+          git push -f origin HEAD:gh-pages
