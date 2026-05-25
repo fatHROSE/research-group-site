@@ -1,5 +1,5 @@
 # Hugo 站点配置
-baseURL: "https://research-group-site-one.vercel.app/"
+baseURL: "https://fathrose.github.io/research-group-site/"
 title: "生物驱动材料与功能化应用课题组"
 languageCode: "zh-CN"
 defaultContentLanguage: "zh"
