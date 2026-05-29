@@ -7,27 +7,27 @@ on:
       - master
   workflow_dispatch:
 
-env:
-  BASE_URL: "https://fathrose.github.io/research-group-site/"
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        run: |
+          git init
+          git remote add origin https://github.com/${{ github.repository }}.git
+          git fetch origin ${{ github.ref_name }}
+          git checkout ${{ github.ref_name }}
 
       - name: Install Hugo
         run: |
-          wget -qO- https://github.com/gohugoio/hugo/releases/download/v0.161.1/hugo_extended_0.161.1_linux-amd64.tar.gz | tar xz
-          sudo mv hugo /usr/local/bin/
+          curl -sL https://github.com/gohugoio/hugo/releases/download/v0.161.1/hugo_extended_0.161.1_linux-amd64.tar.gz | tar xz
+          mv hugo /usr/local/bin/hugo
 
       - name: Build
-        run: hugo --gc --minify --baseURL "${{ env.BASE_URL }}"
+        run: hugo --gc --minify --baseURL "https://fathrose.github.io/research-group-site/"
 
       - name: Deploy
-        env:
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd public
           git init
@@ -35,5 +35,5 @@ jobs:
           git config user.email "actions@github.com"
           git add -A
           git commit -m "Deploy"
-          git remote add origin https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push -f origin HEAD:gh-pages
