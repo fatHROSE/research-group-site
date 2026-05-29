@@ -1,232 +1,310 @@
-# 课题组管理网站
+[Clang]: https://clang.llvm.org/
+[GCC]: https://gcc.gnu.org/
+[Git]: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+[Go]: https://go.dev/doc/install
+[bep]: https://github.com/bep
+[bugs]: https://github.com/gohugoio/hugo/issues?q=is%3Aopen+is%3Aissue+label%3ABug
+[contributing]: CONTRIBUTING.md
+[create a proposal]: https://github.com/gohugoio/hugo/issues/new?labels=Proposal%2C+NeedsTriage&template=feature_request.md
+[dart sass]: https://gohugo.io/functions/css/sass/#dart-sass
+[details]: https://gohugo.io/host-and-deploy/deploy-with-hugo-deploy/
+[documentation repository]: https://github.com/gohugoio/hugoDocs
+[documentation]: https://gohugo.io/documentation
+[dragonfly bsd, freebsd, netbsd, and openbsd]: https://gohugo.io/installation/bsd
+[features]: https://gohugo.io/about/features/
+[forum]: https://discourse.gohugo.io
+[friends]: https://github.com/gohugoio/hugo/graphs/contributors
+[hugo modules]: https://gohugo.io/hugo-modules/
+[installation]: https://gohugo.io/installation
+[issue queue]: https://github.com/gohugoio/hugo/issues
+[linux]: https://gohugo.io/installation/linux
+[macos]: https://gohugo.io/installation/macos
+[prebuilt binary]: https://github.com/gohugoio/hugo/releases/latest
+[requesting help]: https://discourse.gohugo.io/t/requesting-help/9132
+[spf13]: https://github.com/spf13
+[static site generator]: https://en.wikipedia.org/wiki/Static_site_generator
+[support]: https://discourse.gohugo.io
+[themes]: https://themes.gohugo.io/
+[transpile sass to css]: https://gohugo.io/functions/css/sass/
+[website]: https://gohugo.io
+[windows]: https://gohugo.io/installation/windows
 
-基于 Hugo Wowchemy 学术模板 + Supabase 后端 + GitHub Pages 托管的课题组管理系统。
+<a href="https://gohugo.io/"><img src="https://raw.githubusercontent.com/gohugoio/gohugoioTheme/master/static/images/hugo-logo-wide.svg?sanitize=true" alt="Hugo" width="565"></a>
 
-## 功能特性
+A fast and flexible static site generator built with love by [bep][], [spf13][], and [friends][] in Go.
 
-- 📚 **论文/成果管理** - 管理课题组发表的学术论文和研究成果
-- 📁 **文件共享/文档库** - 上传、管理和共享课题组内部文档
-- 📋 **项目/课题列表管理** - 管理研究项目和课题信息
-- 👥 **团队成员管理** - 展示课题组成员信息
-- 🔐 **用户认证** - 基于 Supabase Auth 的安全认证
-- 📱 **响应式设计** - 适配桌面和移动设备
+---
 
-## 技术栈
+[![GoDoc](https://godoc.org/github.com/gohugoio/hugo?status.svg)](https://godoc.org/github.com/gohugoio/hugo)
+[![Tests on Linux, MacOS and Windows](https://github.com/gohugoio/hugo/workflows/Test/badge.svg)](https://github.com/gohugoio/hugo/actions?query=workflow%3ATest)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gohugoio/hugo)](https://goreportcard.com/report/github.com/gohugoio/hugo)
 
-- **前端**: Hugo + Wowchemy (Hugo Blox) 学术模板
-- **后端**: Supabase (PostgreSQL + 实时数据库 + 认证 + 存储)
-- **托管**: GitHub Pages (免费)
-- **部署**: GitHub Actions 自动化部署
+[Website][] | [Installation][] | [Documentation][] | [Support][] | [Contributing][] | <a rel="me" href="https://fosstodon.org/@gohugoio">Mastodon</a>
 
-## 快速开始
+## Overview
 
-### 1. 克隆项目
+Hugo is a [static site generator][] written in Go, optimized for speed and designed for flexibility. With its advanced templating system and fast asset pipelines, Hugo renders a complete site in seconds, often less.
 
-```bash
-git clone https://github.com/your-username/research-group-site.git
-cd research-group-site
+Due to its flexible framework, multilingual support, and powerful taxonomy system, Hugo is widely used to create:
+
+- Corporate, government, nonprofit, education, news, event, and project sites
+- Documentation sites
+- Image portfolios
+- Landing pages
+- Business, professional, and personal blogs
+- Resumes and CVs
+
+Use Hugo's embedded web server during development to instantly see changes to content, structure, behavior, and presentation. Then deploy the site to your host, or push changes to your Git provider for automated builds and deployment.
+
+Hugo's fast asset pipelines include:
+
+- CSS Processing &ndash; Bundle, transform, minify, create source maps, perform SRI hashing, and integrate with PostCSS.
+- Image processing &ndash; Convert, resize, crop, rotate, adjust colors, apply filters, overlay text and images, and extract metadata
+- JavaScript bundling &ndash; Transpile TypeScript and JSX to JavaScript, bundle, tree shake, minify, create source maps, and perform SRI hashing.
+- Sass processing &ndash; Transpile Sass to CSS, bundle, tree shake, minify, create source maps, perform SRI hashing, and integrate with PostCSS
+- Tailwind CSS processing &ndash; Compile Tailwind CSS utility classes into standard CSS, bundle, tree shake, optimize, minify, perform SRI hashing, and integrate with PostCSS
+
+And with [Hugo Modules][], you can share content, assets, data, translations, themes, templates, and configuration with other projects via public or private Git repositories.
+
+See the [features][] section of the documentation for a comprehensive summary of Hugo's capabilities.
+
+## Sponsors
+
+<p>&nbsp;</p>
+<p float="left">
+  <a href="https://www.jetbrains.com/go/?utm_source=OSS&utm_medium=referral&utm_campaign=hugo" target="_blank"><img src="https://raw.githubusercontent.com/gohugoio/hugoDocs/master/assets/images/sponsors/goland.svg" width="200" alt="The complete IDE crafted for professional Go developers."></a>
+  &nbsp;&nbsp;&nbsp;
+    <a href="https://cloudcannon.com/hugo-cms/?utm_campaign=HugoSponsorship&utm_source=sponsor&utm_content=gohugo" target="_blank"><img src="https://raw.githubusercontent.com/gohugoio/hugoDocs/master/assets/images/sponsors/cloudcannon-cms-logo.svg" width="200" alt="CloudCannon"></a>
+</p>
+
+## Editions
+
+Hugo is available in several editions. Use the standard edition unless you need additional features.
+
+Feature|standard|deploy|extended|extended/deploy
+:--|:-:|:-:|:-:|:-:
+Core features|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:
+Direct cloud deployment (1)|:x:|:heavy_check_mark:|:x:|:heavy_check_mark:
+LibSass support (2)|:x:|:x:|:heavy_check_mark:|:heavy_check_mark:
+
+(1) Deploy your site directly to a Google Cloud Storage bucket, an AWS S3 bucket, or an Azure Storage container. See&nbsp;[details][].
+
+(2) [Transpile Sass to CSS][] via embedded LibSass. Note that embedded LibSass was deprecated in v0.153.0 and will be removed in a future release. Use the [Dart Sass][] transpiler instead, which is compatible with any edition.
+
+## Installation
+
+Install Hugo from a [prebuilt binary][], package manager, or package repository. Please see the installation instructions for your operating system:
+
+- [macOS][]
+- [Linux][]
+- [Windows][]
+- [DragonFly BSD, FreeBSD, NetBSD, and OpenBSD][]
+
+## Build from source
+
+To build Hugo from source you must install:
+
+1. [Git][]
+1. [Go][] version 1.25.0 or later
+
+### Standard edition
+
+To build and install the standard edition:
+
+```sh
+CGO_ENABLED=0 go install github.com/gohugoio/hugo@latest
 ```
 
-### 2. 配置 Supabase
+### Deploy edition
 
-1. 访问 [Supabase](https://supabase.com/) 并创建免费账户
-2. 创建新项目
-3. 在 SQL Editor 中执行 `supabase/schema.sql` 创建数据库表
-4. 获取项目 URL 和 anon key
+To build and install the deploy edition:
 
-### 3. 配置环境变量
-
-在 GitHub 仓库的 Settings > Secrets and variables > Actions 中添加：
-
-- `SUPABASE_URL`: 你的 Supabase 项目 URL
-- `SUPABASE_ANON_KEY`: 你的 Supabase anon key
-
-### 4. 部署到 GitHub Pages
-
-1. 在 GitHub 仓库的 Settings > Pages 中：
-   - Source: 选择 "GitHub Actions"
-2. 推送代码到 main 分支，GitHub Actions 会自动部署
-
-### 5. 访问管理后台
-
-部署完成后，访问 `https://your-username.github.io/research-group-site/admin/` 进入管理后台。
-
-## 本地开发
-
-### 安装 Hugo
-
-```bash
-# Windows (使用 Chocolatey)
-choco install hugo-extended
-
-# macOS (使用 Homebrew)
-brew install hugo
-
-# Linux (使用 Snap)
-sudo snap install hugo
+```sh
+CGO_ENABLED=0 go install -tags withdeploy github.com/gohugoio/hugo@latest
 ```
 
-### 本地运行
+### Extended edition
 
-```bash
-# 克隆子模块
-git submodule update --init --recursive
+To build and install the extended edition, first install a C compiler such as [GCC][] or [Clang][] and then run the following command.
 
-# 本地运行
-hugo server -D
+```sh
+CGO_ENABLED=1 go install -tags extended github.com/gohugoio/hugo@latest
 ```
 
-访问 `http://localhost:1313/` 查看效果。
+### Extended/deploy edition
 
-## 项目结构
+To build and install the extended/deploy edition, first install a C compiler such as [GCC][] or [Clang][] and then run the following command.
 
-```
-research-group-site/
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # GitHub Actions 部署配置
-├── config/
-│   └── _default/
-│       ├── config.yaml         # Hugo 主配置
-│       ├── languages.yaml      # 语言配置
-│       ├── menus.yaml          # 菜单配置
-│       └── params.yaml         # 站点参数（含 Supabase 配置）
-├── content/
-│   ├── admin/
-│   │   └── _index.md           # 管理后台页面
-│   ├── home/                   # 首页内容
-│   ├── publications/           # 论文内容
-│   ├── authors/                # 成员内容
-│   └── project/                # 项目内容
-├── layouts/
-│   ├── admin/
-│   │   └── baseof.html         # 管理后台布局
-│   └── partials/
-│       └── supabase.html       # Supabase 初始化
-├── static/
-│   ├── js/
-│   │   └── supabase-client.js  # Supabase 客户端和数据服务
-│   └── css/
-│       └── custom.css          # 自定义样式
-├── supabase/
-│   └── schema.sql              # 数据库表结构
-└── README.md
+```sh
+CGO_ENABLED=1 go install -tags extended,withdeploy github.com/gohugoio/hugo@latest
 ```
 
-## 数据库表结构
+## Star History
 
-### projects (项目表)
-- id: UUID 主键
-- title: 项目名称
-- slug: URL 标识
-- description: 项目描述
-- status: 状态 (active/completed/paused)
-- start_date: 开始日期
-- end_date: 结束日期
-- funding_source: 资助来源
-- funding_amount: 资助金额
-- principal_investigator: 负责人
+[![Star History Chart](https://api.star-history.com/svg?repos=gohugoio/hugo&type=Timeline)](https://star-history.com/#gohugoio/hugo&Timeline)
 
-### publications (论文表)
-- id: UUID 主键
-- title: 论文标题
-- slug: URL 标识
-- authors: 作者数组
-- abstract: 摘要
-- journal: 期刊名称
-- year: 发表年份
-- doi: DOI 编号
-- url: 论文链接
-- publication_type: 类型 (article/conference/book/thesis/report/other)
-- project_id: 关联项目
+## Documentation
 
-### documents (文档表)
-- id: UUID 主键
-- title: 文档标题
-- description: 文档描述
-- file_path: 文件路径
-- file_size: 文件大小
-- file_type: 文件类型
-- category: 分类 (general/paper/data/code/presentation/report/other)
-- project_id: 关联项目
+Hugo's [documentation][] includes installation instructions, a quick start guide, conceptual explanations, reference information, and examples.
 
-### members (成员表)
-- id: UUID 主键 (关联 auth.users)
-- full_name: 姓名
-- email: 邮箱
-- role: 角色 (admin/pi/postdoc/phd/master/undergraduate/visitor/member)
-- title: 职称
-- bio: 简介
-- avatar_url: 头像 URL
-- research_interests: 研究兴趣数组
+Please submit documentation issues and pull requests to the [documentation repository][].
 
-## 使用说明
+## Support
 
-### 管理后台
+Please **do not use the issue queue** for questions or troubleshooting. Unless you are certain that your issue is a software defect, use the [forum][].
 
-1. 访问 `/admin/` 页面
-2. 使用 Supabase 账户登录
-3. 在管理后台中管理项目、论文和文档
+Hugo's [forum][] is an active community of users and developers who answer questions, share knowledge, and provide examples. A quick search of over 20,000 topics will often answer your question. Please be sure to read about [requesting help][] before asking your first question.
 
-### 文件上传
+## Contributing
 
-- 支持上传各种类型的文件
-- 文件存储在 Supabase Storage 中
-- 支持文件分类和关联项目
+You can contribute to the Hugo project by:
 
-### 数据安全
+- Answering questions on the [forum][]
+- Improving the [documentation][]
+- Monitoring the [issue queue][]
+- Creating or improving [themes][]
+- Squashing [bugs][]
 
-- 所有数据通过 Supabase RLS (行级安全策略) 保护
-- 公开数据可匿名访问
-- 写操作需要用户认证
+Please submit documentation issues and pull requests to the [documentation repository][].
 
-## 免费版限制
+If you have an idea for an enhancement or new feature, create a new topic on the [forum][] in the "Feature" category. This will help you to:
 
-Supabase 免费版限制：
-- 数据库: 500 MB
-- 带宽: 5 GB/月
-- 月活用户: 50,000
-- 文件存储: 1 GB
-- 7 天无活动后自动暂停
+- Determine if the capability already exists
+- Measure interest
+- Refine the concept
 
-对于课题组管理来说，这些限制完全够用。
+If there is sufficient interest, [create a proposal][]. Do not submit a pull request until the project lead accepts the proposal.
 
-## 自定义
+For a complete guide to contributing to Hugo, see the [Contribution Guide](CONTRIBUTING.md).
 
-### 修改站点信息
+## License
 
-编辑 `config/_default/params.yaml` 修改站点标题、描述等信息。
+For the Hugo source code, see [LICENSE](/LICENSE).
 
-### 修改样式
+We also bundle some libraries in binary/WASM form:
 
-编辑 `static/css/custom.css` 添加自定义样式。
+- [libwebp](https://github.com/webmproject/libwebp), [BSD-3-Clause license](https://github.com/webmproject/libwebp?tab=BSD-3-Clause-1-ov-file#readme)
+- [Katex](https://github.com/KaTeX/KaTeX), [MIT license](https://github.com/KaTeX/KaTeX?tab=MIT-1-ov-file#readme)
+- [QuickJS](https://github.com/bellard/quickjs?tab=License-1-ov-file#readme), [License](https://github.com/bellard/quickjs?tab=License-1-ov-file#readme)
 
-### 修改菜单
+## Dependencies
 
-编辑 `config/_default/menus.yaml` 修改导航菜单。
+Hugo stands on the shoulders of great open source libraries. Run `hugo env --logLevel info` to display a list of dependencies.
 
-## 常见问题
+<details>
+<summary>See current dependencies</summary>
 
-### Q: 如何添加新成员？
-
-A: 在 Supabase 认证中创建用户，然后在 members 表中添加成员信息。
-
-### Q: 如何上传文件？
-
-A: 访问管理后台，在文档管理中上传文件。文件会自动存储到 Supabase Storage。
-
-### Q: 如何关联项目和论文？
-
-A: 在创建或编辑论文时，选择关联的项目。
-
-### Q: 网站暂停了怎么办？
-
-A: Supabase 免费版会在 7 天无活动后暂停。只需登录 Supabase 控制台点击"Restore"即可恢复。
-
-## 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
-## 许可证
-
-MIT License
+```text
+github.com/BurntSushi/locker="v0.0.0-20171006230638-a6e239ea1c69"
+github.com/JohannesKaufmann/dom="v0.2.0"
+github.com/JohannesKaufmann/html-to-markdown/v2="v2.5.0"
+github.com/alecthomas/chroma/v2="v2.21.1"
+github.com/aymerick/douceur="v0.2.0"
+github.com/bep/clocks="v0.5.0"
+github.com/bep/debounce="v1.2.0"
+github.com/bep/gitmap="v1.9.0"
+github.com/bep/goat="v0.5.0"
+github.com/bep/godartsass/v2="v2.5.0"
+github.com/bep/golibsass="v1.2.0"
+github.com/bep/goportabletext="v0.1.0"
+github.com/bep/helpers="v0.6.0"
+github.com/bep/imagemeta="v0.12.0"
+github.com/bep/lazycache="v0.8.0"
+github.com/bep/logg="v0.4.0"
+github.com/bep/mclib="v1.20400.20402"
+github.com/bep/overlayfs="v0.10.0"
+github.com/bep/simplecobra="v0.6.1"
+github.com/bep/textandbinarywriter="v0.0.0-20251212174530-cd9f0732f60f"
+github.com/bep/tmc="v0.5.1"
+github.com/bits-and-blooms/bitset="v1.24.4"
+github.com/cespare/xxhash/v2="v2.3.0"
+github.com/clbanning/mxj/v2="v2.7.0"
+github.com/clipperhouse/displaywidth="v0.6.0"
+github.com/clipperhouse/stringish="v0.1.1"
+github.com/clipperhouse/uax29/v2="v2.3.0"
+github.com/cpuguy83/go-md2man/v2="v2.0.6"
+github.com/disintegration/gift="v1.2.1"
+github.com/dlclark/regexp2="v1.11.5"
+github.com/evanw/esbuild="v0.27.2"
+github.com/fatih/color="v1.18.0"
+github.com/frankban/quicktest="v1.14.6"
+github.com/fsnotify/fsnotify="v1.9.0"
+github.com/getkin/kin-openapi="v0.133.0"
+github.com/go-openapi/jsonpointer="v0.21.0"
+github.com/go-openapi/swag="v0.23.0"
+github.com/gobuffalo/flect="v1.0.3"
+github.com/gobwas/glob="v0.2.3"
+github.com/goccy/go-yaml="v1.19.1"
+github.com/gohugoio/go-i18n/v2="v2.1.3-0.20251018145728-cfcc22d823c6"
+github.com/gohugoio/go-radix="v1.2.0"
+github.com/gohugoio/hashstructure="v0.6.0"
+github.com/gohugoio/httpcache="v0.8.0"
+github.com/gohugoio/hugo-goldmark-extensions/extras="v0.5.0"
+github.com/gohugoio/hugo-goldmark-extensions/passthrough="v0.3.1"
+github.com/gohugoio/locales="v0.14.0"
+github.com/gohugoio/localescompressed="v1.0.1"
+github.com/google/go-cmp="v0.7.0"
+github.com/gorilla/css="v1.0.1"
+github.com/gorilla/websocket="v1.5.3"
+github.com/hairyhenderson/go-codeowners="v0.7.0"
+github.com/hashicorp/golang-lru/v2="v2.0.7"
+github.com/jdkato/prose="v1.2.1"
+github.com/josharian/intern="v1.0.0"
+github.com/kr/pretty="v0.3.1"
+github.com/kr/text="v0.2.0"
+github.com/kyokomi/emoji/v2="v2.2.13"
+github.com/mailru/easyjson="v0.7.7"
+github.com/makeworld-the-better-one/dither/v2="v2.4.0"
+github.com/marekm4/color-extractor="v1.2.1"
+github.com/mattn/go-colorable="v0.1.13"
+github.com/mattn/go-isatty="v0.0.20"
+github.com/mattn/go-runewidth="v0.0.19"
+github.com/microcosm-cc/bluemonday="v1.0.27"
+github.com/mitchellh/mapstructure="v1.5.1-0.20231216201459-8508981c8b6c"
+github.com/mohae/deepcopy="v0.0.0-20170929034955-c48cc78d4826"
+github.com/muesli/smartcrop="v0.3.0"
+github.com/niklasfasching/go-org="v1.9.1"
+github.com/oasdiff/yaml3="v0.0.0-20250309153720-d2182401db90"
+github.com/oasdiff/yaml="v0.0.0-20250309154309-f31be36b4037"
+github.com/olekukonko/cat="v0.0.0-20250911104152-50322a0618f6"
+github.com/olekukonko/errors="v1.1.0"
+github.com/olekukonko/ll="v0.1.3"
+github.com/olekukonko/tablewriter="v1.1.2"
+github.com/pbnjay/memory="v0.0.0-20210728143218-7b4eea64cf58"
+github.com/pelletier/go-toml/v2="v2.2.4"
+github.com/perimeterx/marshmallow="v1.1.5"
+github.com/pkg/browser="v0.0.0-20240102092130-5ac0b6a4141c"
+github.com/pkg/errors="v0.9.1"
+github.com/rogpeppe/go-internal="v1.14.1"
+github.com/russross/blackfriday/v2="v2.1.0"
+github.com/sass/dart-sass/compiler="1.97.1"
+github.com/sass/dart-sass/implementation="1.97.1"
+github.com/sass/dart-sass/protocol="3.2.0"
+github.com/spf13/afero="v1.15.0"
+github.com/spf13/cast="v1.10.0"
+github.com/spf13/cobra="v1.10.2"
+github.com/spf13/fsync="v0.10.1"
+github.com/spf13/pflag="v1.0.9"
+github.com/tdewolff/minify/v2="v2.24.8"
+github.com/tdewolff/parse/v2="v2.8.5"
+github.com/tetratelabs/wazero="v1.10.1"
+github.com/webmproject/libwebp="v1.6.0"
+github.com/woodsbury/decimal128="v1.3.0"
+github.com/yuin/goldmark-emoji="v1.0.6"
+github.com/yuin/goldmark="v1.7.13"
+go.uber.org/automaxprocs="v1.5.3"
+go.yaml.in/yaml/v3="v3.0.4"
+golang.org/x/crypto="v0.46.0"
+golang.org/x/image="v0.34.0"
+golang.org/x/mod="v0.31.0"
+golang.org/x/net="v0.48.0"
+golang.org/x/sync="v0.19.0"
+golang.org/x/sys="v0.39.0"
+golang.org/x/text="v0.32.0"
+golang.org/x/tools="v0.40.0"
+google.golang.org/protobuf="v1.36.10"
+gopkg.in/yaml.v3="v3.0.1"
+rsc.io/qr="v0.2.0"
+software.sslmate.com/src/go-pkcs12="v0.2.0"
+```
+</details>

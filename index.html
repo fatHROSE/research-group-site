@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生物驱动材料与功能化应用课题组</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --primary-light: #60a5fa;
+  --accent: #0ea5e9;
+  --success: #10b981;
+  --danger: #ef4444;
+  --warning: #f59e0b;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-500: #64748b;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --text: var(--gray-800);
+  --text-muted: var(--gray-500);
+  --bg: #ffffff;
+  --border: var(--gray-200);
+  --radius: 0.75rem;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --transition: all 0.25s ease;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text); background: var(--bg); line-height: 1.6;
+}
+
+/* ===== Header & Navigation ===== */
+nav {
+  background: white; border-bottom: 1px solid var(--border);
+  padding: 0 2rem; position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(8px);
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; display: flex;
+  align-items: center; justify-content: space-between; height: 64px;
+}
+.nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--primary); text-decoration: none; }
+.nav-links { display: flex; gap: 0.5rem; }
+.nav-links a {
+  color: var(--text-muted); text-decoration: none; padding: 0.5rem 1rem;
+  border-radius: 0.5rem; transition: var(--transition); font-size: 0.9rem; font-weight: 500;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--primary); background: var(--gray-50); }
+
+/* ===== Hero ===== */
+.hero {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+  padding: 6rem 2rem; color: white; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; top: -50%; right: -20%;
+  width: 60%; height: 200%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+.hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; position: relative; }
+.hero p { font-size: 1.15rem; opacity: 0.9; max-width: 600px; margin: 0 auto; position: relative; }
+.hero-cta { margin-top: 2rem; position: relative; }
+.hero-cta a {
+  display: inline-block; padding: 0.8rem 2rem; background: white; color: var(--primary);
+  border-radius: 2rem; font-weight: 600; text-decoration: none; transition: var(--transition);
+}
+.hero-cta a:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+
+/* ===== Sections ===== */
+.section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+.section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; text-align: center; }
+.section-subtitle { color: var(--text-muted); text-align: center; margin-bottom: 3rem; font-size: 1.05rem; }
+.directions { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.direction-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 2rem; transition: var(--transition);
+}
+.direction-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+.direction-card h3 { color: var(--primary); margin-bottom: 0.75rem; font-size: 1.1rem; }
+.direction-card p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.7; }
+
+/* ===== Admin Panel ===== */
+.page { display: none; }
+.page.active { display: block; }
+.admin-container { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+.admin-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border);
+}
+.admin-header h2 { font-size: 1.5rem; }
+.admin-tabs { display: flex; gap: 0.5rem; margin-bottom: 2rem; }
+.tab-btn {
+  padding: 0.6rem 1.25rem; border: 2px solid var(--border); background: var(--bg);
+  color: var(--text); cursor: pointer; border-radius: 0.5rem; font-weight: 600;
+  font-size: 0.9rem; transition: var(--transition);
+}
+.tab-btn:hover { border-color: var(--primary); color: var(--primary); }
+.tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; margin-bottom: 0.4rem; font-weight: 600; color: var(--text); font-size: 0.9rem; }
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%; padding: 0.6rem 0.85rem; font-size: 0.95rem;
+  border: 2px solid var(--border); border-radius: 0.5rem; transition: var(--transition);
+  background: var(--bg); color: var(--text);
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+.form-group textarea { min-height: 100px; resize: vertical; }
+.btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.25rem; font-size: 0.875rem; font-weight: 600;
+  border-radius: 0.5rem; transition: var(--transition); cursor: pointer;
+  border: none; text-decoration: none; color: white;
+}
+.btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,99,235,0.3); }
+.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+.btn-outline:hover { background: var(--primary); color: white; }
+.btn-sm { padding: 0.35rem 0.85rem; font-size: 0.8rem; }
+.btn-danger { background: linear-gradient(135deg, var(--danger), #dc2626); }
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); display: none; align-items: center;
+  justify-content: center; z-index: 1000; backdrop-filter: blur(4px);
+}
+.modal-content {
+  background: var(--bg); padding: 2rem; border-radius: var(--radius);
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); max-width: 650px;
+  width: 90%; max-height: 80vh; overflow-y: auto;
+}
+.modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border);
+}
+.modal-header h3 { margin: 0; }
+.modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-muted); }
+.list-item {
+  border: 1px solid var(--border); padding: 1.25rem; margin-bottom: 0.75rem;
+  border-radius: 0.5rem; display: flex; justify-content: space-between;
+  align-items: center; transition: var(--transition);
+}
+.list-item:hover { box-shadow: var(--shadow); }
+.list-item .actions { display: flex; gap: 0.5rem; }
+.list-item h4 { margin-bottom: 0.25rem; }
+.list-item p { color: var(--text-muted); font-size: 0.9rem; }
+.empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
+
+/* ===== Auth ===== */
+.auth-section { max-width: 400px; margin: 4rem auto; padding: 2rem; }
+.auth-section h2 { text-align: center; margin-bottom: 1.5rem; }
+#login-form input { width: 100%; margin-bottom: 1rem; }
+#user-info { display: none; text-align: center; padding: 2rem; }
+#admin-content { display: none; }
+footer {
+  text-align: center; padding: 2rem; color: var(--text-muted);
+  border-top: 1px solid var(--border); font-size: 0.85rem;
+}
+@media (max-width: 768px) {
+  .hero h1 { font-size: 1.8rem; }
+  .nav-links { display: none; }
+  .admin-tabs { flex-wrap: wrap; }
+  .list-item { flex-direction: column; align-items: flex-start; }
+  .list-item .actions { margin-top: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="#" onclick="showPage('home')">🧪 生物驱动材料课题组</a>
+    <div class="nav-links">
+      <a href="#" class="active" onclick="showPage('home')">首页</a>
+      <a href="#" onclick="showPage('admin')">管理后台</a>
+      <a href="#" onclick="showPage('admin')">登录</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== Home Page ========== -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <h1>生物驱动材料与功能化应用课题组</h1>
+    <p>探索生物基材料前沿，推动可持续功能化应用的发展</p>
+    <div class="hero-cta">
+      <a href="#" onclick="showPage('admin')">进入管理后台 →</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">研究方向</h2>
+    <p class="section-subtitle">聚焦生物基材料的前沿探索与功能化应用</p>
+    <div class="directions">
+      <div class="direction-card">
+        <h3>🌿 生物基高分子材料</h3>
+        <p>从天然资源出发，设计可降解、高性能的生物基聚合物，替代传统石油基材料。</p>
+      </div>
+      <div class="direction-card">
+        <h3>🧬 功能性生物复合材料</h3>
+        <p>将生物活性组分与合成基质复合，赋予材料智能响应、抗菌、自修复等特性。</p>
+      </div>
+      <div class="direction-card">
+        <h3>⚡ 生物驱动智能材料</h3>
+        <p>利用生物机制驱动材料形变、传感和自修复，开发仿生智能材料系统。</p>
+      </div>
+      <div class="direction-card">
+        <h3>♻️ 绿色催化与功能化应用</h3>
+        <p>开发环保催化工艺，实现材料的高值化功能转化，推动绿色化工发展。</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ========== Admin Page ========== -->
+<div id="page-admin" class="page">
+  <div class="auth-section" id="login-form">
+    <h2>登录管理后台</h2>
+    <form id="loginForm">
+      <div class="form-group">
+        <label>邮箱</label>
+        <input type="email" id="loginEmail" required placeholder="your@email.com">
+      </div>
+      <div class="form-group">
+        <label>密码</label>
+        <input type="password" id="loginPassword" required placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%">登录</button>
+    </form>
+  </div>
+
+  <div id="user-info">
+    <p>已登录: <span id="userEmail"></span></p>
+    <button class="btn btn-outline btn-sm" id="logoutBtn">退出登录</button>
+  </div>
+
+  <div class="admin-container" id="admin-content">
+    <div class="admin-header">
+      <h2>课题组管理系统</h2>
+    </div>
+    <div class="admin-tabs">
+      <button class="tab-btn active" data-tab="projects">项目</button>
+      <button class="tab-btn" data-tab="publications">论文</button>
+      <button class="tab-btn" data-tab="documents">文档</button>
+    </div>
+
+    <!-- Projects -->
+    <div id="projects-tab" class="tab-content active">
+      <button class="btn btn-primary btn-sm" id="addProjectBtn">+ 添加项目</button>
+      <div id="project-list"></div>
+      <div class="modal" id="project-form-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="project-form-title">添加项目</h3>
+            <button class="modal-close" onclick="closeModal('project-form-modal')">✕</button>
+          </div>
+          <form id="projectForm">
+            <input type="hidden" id="projectId">
+            <div class="form-group"><label>项目名称</label><input type="text" id="projectTitle" required></div>
+            <div class="form-group"><label>URL 标识</label><input type="text" id="projectSlug" required></div>
+            <div class="form-group"><label>描述</label><textarea id="projectDescription"></textarea></div>
+            <div class="form-group">
+              <label>状态</label>
+              <select id="projectStatus">
+                <option value="active">进行中</option>
+                <option value="completed">已完成</option>
+                <option value="paused">已暂停</option>
+              </select>
+            </div>
+            <div class="form-group"><label>开始日期</label><input type="date" id="projectStartDate"></div>
+            <div class="form-group"><label>结束日期</label><input type="date" id="projectEndDate"></div>
+            <div class="form-group"><label>资助来源</label><input type="text" id="projectFunding"></div>
+            <div class="form-group"><label>负责人</label><input type="text" id="projectPI"></div>
+            <button type="submit" class="btn btn-primary">保存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publications -->
+    <div id="publications-tab" class="tab-content">
+      <button class="btn btn-primary btn-sm" id="addPublicationBtn">+ 添加论文</button>
+      <div id="publication-list"></div>
+      <div class="modal" id="publication-form-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="publication-form-title">添加论文</h3>
+            <button class="modal-close" onclick="closeModal('publication-form-modal')">✕</button>
+          </div>
+          <form id="publicationForm">
+            <input type="hidden" id="publicationId">
+            <div class="form-group"><label>论文标题</label><input type="text" id="publicationTitle" required></div>
+            <div class="form-group"><label>URL 标识</label><input type="text" id="publicationSlug" required></div>
+            <div class="form-group"><label>作者（逗号分隔）</label><input type="text" id="publicationAuthors" required></div>
+            <div class="form-group"><label>摘要</label><textarea id="publicationAbstract"></textarea></div>
+            <div class="form-group"><label>期刊</label><input type="text" id="publicationJournal"></div>
+            <div class="form-group"><label>年份</label><input type="number" id="publicationYear"></div>
+            <div class="form-group"><label>DOI</label><input type="text" id="publicationDoi"></div>
+            <div class="form-group"><label>链接</label><input type="url" id="publicationUrl"></div>
+            <div class="form-group">
+              <label>类型</label>
+              <select id="publicationType">
+                <option value="article">期刊论文</option>
+                <option value="conference">会议论文</option>
+                <option value="book">书籍</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">保存</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents -->
+    <div id="documents-tab" class="tab-content">
+      <button class="btn btn-primary btn-sm" id="addDocumentBtn">+ 上传文档</button>
+      <div id="document-list"></div>
+      <div class="modal" id="document-form-modal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 id="document-form-title">上传文档</h3>
+            <button class="modal-close" onclick="closeModal('document-form-modal')">✕</button>
+          </div>
+          <form id="documentForm">
+            <input type="hidden" id="documentId">
+            <div class="form-group"><label>文件</label><input type="file" id="documentFile" required></div>
+            <div class="form-group"><label>标题</label><input type="text" id="documentTitle" required></div>
+            <div class="form-group"><label>描述</label><textarea id="documentDescription"></textarea></div>
+            <div class="form-group">
+              <label>分类</label>
+              <select id="documentCategory">
+                <option value="general">通用</option>
+                <option value="paper">论文</option>
+                <option value="data">数据</option>
+                <option value="report">报告</option>
+                <option value="other">其他</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary">上传</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>生物驱动材料与功能化应用课题组 &copy; 2026</p>
+</footer>
+
+<script>
+// ===== Supabase 配置 =====
+const SUPABASE_URL = 'https://zmvnjrmkuywfgcoiyscc.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_014ct25v6jiwccFxIjD52g_cJKWbtty';
+
+let supabaseClient = null;
+function initSupabase() {
+  if (typeof supabase !== 'undefined') {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    return true;
+  }
+  return false;
+}
+
+// ===== Auth Service =====
+const AuthService = {
+  async signIn(email, password) {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    return error ? null : data.user;
+  },
+  async signOut() {
+    const { error } = await supabaseClient.auth.signOut();
+    return !error;
+  },
+  async getCurrentUser() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    return user;
+  }
+};
+
+// ===== Project Service =====
+const ProjectService = {
+  async getAll() {
+    const { data } = await supabaseClient.from('projects').select('*').order('created_at', { ascending: false });
+    return data || [];
+  },
+  async getById(id) {
+    const { data } = await supabaseClient.from('projects').select('*').eq('id', id).single();
+    return data;
+  },
+  async create(p) {
+    const { data } = await supabaseClient.from('projects').insert([p]).select();
+    return data ? data[0] : null;
+  },
+  async update(id, updates) {
+    const { data } = await supabaseClient.from('projects').update(updates).eq('id', id).select();
+    return data ? data[0] : null;
+  },
+  async delete(id) {
+    const { error } = await supabaseClient.from('projects').delete().eq('id', id);
+    return !error;
+  }
+};
+
+// ===== Publication Service =====
+const PublicationService = {
+  async getAll() {
+    const { data } = await supabaseClient.from('publications').select('*').order('year', { ascending: false });
+    return data || [];
+  },
+  async getById(id) {
+    const { data } = await supabaseClient.from('publications').select('*').eq('id', id).single();
+    return data;
+  },
+  async create(p) {
+    const { data } = await supabaseClient.from('publications').insert([p]).select();
+    return data ? data[0] : null;
+  },
+  async update(id, updates) {
+    const { data } = await supabaseClient.from('publications').update(updates).eq('id', id).select();
+    return data ? data[0] : null;
+  },
+  async delete(id) {
+    const { error } = await supabaseClient.from('publications').delete().eq('id', id);
+    return !error;
+  }
+};
+
+// ===== Document Service =====
+const DocumentService = {
+  async getAll() {
+    const { data } = await supabaseClient.from('documents').select('*').order('created_at', { ascending: false });
+    return data || [];
+  },
+  async getById(id) {
+    const { data } = await supabaseClient.from('documents').select('*').eq('id', id).single();
+    return data;
+  },
+  async upload(file, metadata) {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+    const filePath = `documents/${fileName}`;
+    const { error: uploadError } = await supabaseClient.storage.from('documents').upload(filePath, file);
+    if (uploadError) return null;
+    const { data } = await supabaseClient.from('documents').insert([{
+      title: metadata.title || file.name, description: metadata.description,
+      file_path: filePath, file_size: file.size, file_type: file.type,
+      category: metadata.category || 'general'
+    }]).select();
+    return data ? data[0] : null;
+  },
+  async delete(id) {
+    const doc = await this.getById(id);
+    if (!doc) return false;
+    await supabaseClient.storage.from('documents').remove([doc.file_path]);
+    const { error } = await supabaseClient.from('documents').delete().eq('id', id);
+    return !error;
+  }
+};
+
+// ===== Page Navigation =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+}
+
+// ===== Modal Helpers =====
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+// ===== Page Logic =====
+document.addEventListener('DOMContentLoaded', function() {
+  initSupabase();
+
+  const loginForm = document.getElementById('loginForm');
+  const loginSection = document.getElementById('login-form');
+  const userInfo = document.getElementById('user-info');
+  const userEmail = document.getElementById('userEmail');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const adminContent = document.getElementById('admin-content');
+
+  // Tab switching
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabContents = document.querySelectorAll('.tab-content');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tab = this.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById(tab + '-tab').classList.add('active');
+      if (tab === 'projects') loadProjects();
+      else if (tab === 'publications') loadPublications();
+      else if (tab === 'documents') loadDocuments();
+    });
+  });
+
+  loginForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const user = await AuthService.signIn(email, password);
+    if (user) {
+      loginSection.style.display = 'none';
+      userInfo.style.display = 'block';
+      userEmail.textContent = user.email;
+      adminContent.style.display = 'block';
+      loadProjects();
+    } else {
+      alert('登录失败，请检查邮箱和密码');
+    }
+  });
+
+  logoutBtn.addEventListener('click', async function() {
+    await AuthService.signOut();
+    loginSection.style.display = 'block';
+    userInfo.style.display = 'none';
+    adminContent.style.display = 'none';
+  });
+
+  // Auth check
+  AuthService.getCurrentUser().then(user => {
+    if (user) {
+      loginSection.style.display = 'none';
+      userInfo.style.display = 'block';
+      userEmail.textContent = user.email;
+      adminContent.style.display = 'block';
+      loadProjects();
+    }
+  });
+
+  // ===== Projects =====
+  const addProjectBtn = document.getElementById('addProjectBtn');
+  const projectFormModal = document.getElementById('project-form-modal');
+  const projectForm = document.getElementById('projectForm');
+
+  addProjectBtn.addEventListener('click', () => {
+    projectForm.reset();
+    document.getElementById('projectId').value = '';
+    document.getElementById('project-form-title').textContent = '添加项目';
+    projectFormModal.style.display = 'flex';
+  });
+
+  projectForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('projectId').value;
+    const data = {
+      title: document.getElementById('projectTitle').value,
+      slug: document.getElementById('projectSlug').value,
+      description: document.getElementById('projectDescription').value,
+      status: document.getElementById('projectStatus').value,
+      start_date: document.getElementById('projectStartDate').value || null,
+      end_date: document.getElementById('projectEndDate').value || null,
+      funding_source: document.getElementById('projectFunding').value,
+      principal_investigator: document.getElementById('projectPI').value
+    };
+    const result = id ? await ProjectService.update(id, data) : await ProjectService.create(data);
+    if (result) { projectFormModal.style.display = 'none'; loadProjects(); }
+  });
+
+  window.editProject = async function(id) {
+    const p = await ProjectService.getById(id);
+    if (!p) return;
+    document.getElementById('project-form-title').textContent = '编辑项目';
+    document.getElementById('projectId').value = p.id;
+    document.getElementById('projectTitle').value = p.title;
+    document.getElementById('projectSlug').value = p.slug;
+    document.getElementById('projectDescription').value = p.description || '';
+    document.getElementById('projectStatus').value = p.status;
+    document.getElementById('projectStartDate').value = p.start_date || '';
+    document.getElementById('projectEndDate').value = p.end_date || '';
+    document.getElementById('projectFunding').value = p.funding_source || '';
+    document.getElementById('projectPI').value = p.principal_investigator || '';
+    projectFormModal.style.display = 'flex';
+  };
+
+  window.deleteProject = async function(id) {
+    if (confirm('确定要删除这个项目吗？')) {
+      await ProjectService.delete(id);
+      loadProjects();
+    }
+  };
+
+  async function loadProjects() {
+    const projects = await ProjectService.getAll();
+    const list = document.getElementById('project-list');
+    if (projects.length === 0) {
+      list.innerHTML = '<div class="empty-state"><p>暂无项目数据</p></div>';
+      return;
+    }
+    list.innerHTML = projects.map(p => `
+      <div class="list-item">
+        <div>
+          <h4>${p.title}</h4>
+          <p>${p.status === 'active' ? '进行中' : p.status === 'completed' ? '已完成' : '已暂停'} | ${p.principal_investigator || '未指定'}</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-outline btn-sm" onclick="editProject('${p.id}')">编辑</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteProject('${p.id}')">删除</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===== Publications =====
+  const addPubBtn = document.getElementById('addPublicationBtn');
+  const pubFormModal = document.getElementById('publication-form-modal');
+  const pubForm = document.getElementById('publicationForm');
+
+  addPubBtn.addEventListener('click', () => {
+    pubForm.reset();
+    document.getElementById('publicationId').value = '';
+    document.getElementById('publication-form-title').textContent = '添加论文';
+    pubFormModal.style.display = 'flex';
+  });
+
+  pubForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const id = document.getElementById('publicationId').value;
+    const data = {
+      title: document.getElementById('publicationTitle').value,
+      slug: document.getElementById('publicationSlug').value,
+      authors: document.getElementById('publicationAuthors').value.split(',').map(a => a.trim()),
+      abstract: document.getElementById('publicationAbstract').value,
+      journal: document.getElementById('publicationJournal').value,
+      year: parseInt(document.getElementById('publicationYear').value) || null,
+      doi: document.getElementById('publicationDoi').value,
+      url: document.getElementById('publicationUrl').value,
+      publication_type: document.getElementById('publicationType').value
+    };
+    const result = id ? await PublicationService.update(id, data) : await PublicationService.create(data);
+    if (result) { pubFormModal.style.display = 'none'; loadPublications(); }
+  });
+
+  window.editPublication = async function(id) {
+    const pub = await PublicationService.getById(id);
+    if (!pub) return;
+    document.getElementById('publication-form-title').textContent = '编辑论文';
+    document.getElementById('publicationId').value = pub.id;
+    document.getElementById('publicationTitle').value = pub.title;
+    document.getElementById('publicationSlug').value = pub.slug;
+    document.getElementById('publicationAuthors').value = pub.authors.join(', ');
+    document.getElementById('publicationAbstract').value = pub.abstract || '';
+    document.getElementById('publicationJournal').value = pub.journal || '';
+    document.getElementById('publicationYear').value = pub.year || '';
+    document.getElementById('publicationDoi').value = pub.doi || '';
+    document.getElementById('publicationUrl').value = pub.url || '';
+    document.getElementById('publicationType').value = pub.publication_type;
+    pubFormModal.style.display = 'flex';
+  };
+
+  window.deletePublication = async function(id) {
+    if (confirm('确定要删除这篇论文吗？')) {
+      await PublicationService.delete(id);
+      loadPublications();
+    }
+  };
+
+  async function loadPublications() {
+    const pubs = await PublicationService.getAll();
+    const list = document.getElementById('publication-list');
+    if (pubs.length === 0) {
+      list.innerHTML = '<div class="empty-state"><p>暂无论文数据</p></div>';
+      return;
+    }
+    list.innerHTML = pubs.map(p => `
+      <div class="list-item">
+        <div>
+          <h4>${p.title}</h4>
+          <p>作者: ${p.authors.join(', ')} | 年份: ${p.year || '未指定'}</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-outline btn-sm" onclick="editPublication('${p.id}')">编辑</button>
+          <button class="btn btn-danger btn-sm" onclick="deletePublication('${p.id}')">删除</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===== Documents =====
+  const addDocBtn = document.getElementById('addDocumentBtn');
+  const docFormModal = document.getElementById('document-form-modal');
+  const docForm = document.getElementById('documentForm');
+
+  addDocBtn.addEventListener('click', () => {
+    docForm.reset();
+    document.getElementById('documentId').value = '';
+    document.getElementById('document-form-title').textContent = '上传文档';
+    docFormModal.style.display = 'flex';
+  });
+
+  docForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const file = document.getElementById('documentFile').files[0];
+    const metadata = {
+      title: document.getElementById('documentTitle').value,
+      description: document.getElementById('documentDescription').value,
+      category: document.getElementById('documentCategory').value
+    };
+    const result = await DocumentService.upload(file, metadata);
+    if (result) { docFormModal.style.display = 'none'; loadDocuments(); }
+  });
+
+  async function loadDocuments() {
+    const docs = await DocumentService.getAll();
+    const list = document.getElementById('document-list');
+    if (docs.length === 0) {
+      list.innerHTML = '<div class="empty-state"><p>暂无文档数据</p></div>';
+      return;
+    }
+    list.innerHTML = docs.map(d => `
+      <div class="list-item">
+        <div>
+          <h4>${d.title}</h4>
+          <p>${d.description || ''} | ${d.category}</p>
+        </div>
+        <div class="actions">
+          <button class="btn btn-danger btn-sm" onclick="deleteDocument('${d.id}')">删除</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.deleteDocument = async function(id) {
+    if (confirm('确定要删除这个文档吗？')) {
+      await DocumentService.delete(id);
+      loadDocuments();
+    }
+  };
+});
+</script>
+</body>
+</html>
