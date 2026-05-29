@@ -33,3 +33,6 @@ vendor/
 
 # 缓存
 .cache/
+
+# Hugo binary
+hugo.exe
